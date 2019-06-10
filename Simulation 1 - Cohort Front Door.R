@@ -166,6 +166,8 @@ mod_baseline_age_random
 mod_baseline_cohort_age_random <- lmer(relig~cohort_fiveyear+age_fiveyear+ (1|year), data = sim1)
 mod_baseline_cohort_age_random
 
+#adding cohort indices
+
 
 
 
