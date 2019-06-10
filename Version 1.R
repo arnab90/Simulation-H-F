@@ -10,9 +10,8 @@ n <- 10000
 year <- as.integer(runif(n,min = 1,max=46))
 
 #age taken between 25 and 90, but to mimic the GSS age variable is systematically dependent on the year, i.e. mean age increases with year.
-age2 <- as.integer(year + rnorm(n,0,45))
-age <- ifelse(age2<20,20,age2)
-age <- ifelse(age>90,90,age)
+age <- as.integer(runif(n,min = 25,max=90))
+
 
 #a -ve cohort means simply that the cohort year is before the survey year which is natural.
 cohort <- year-age
