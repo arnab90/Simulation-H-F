@@ -166,8 +166,29 @@ mod_baseline_age_random
 mod_baseline_cohort_age_random <- lmer(relig~cohort_fiveyear+age_fiveyear+ (1|year), data = sim1)
 mod_baseline_cohort_age_random
 
-#adding cohort indices - To see if branching works
+#adding cohort indices 
+index_making <- sim1[,mean(m_secularization),by=cohort]
+secu_loess <- loess(V1~cohort, span=0.4, data = index_making)
+index_making[, "secularization_index" := predict(secu_loess, newdata = index_making)]
 
+index_final <- index_making
+
+index_making <- sim1[,mean(m_culture_shock),by=cohort]
+culture_shock_loess <- loess(V1~cohort, span=0.4, data = index_making)
+index_final[, "culture_shock_index" := predict(culture_shock_loess, newdata = index_making)]
+
+index_making <- sim1[,mean(m_autonomy),by=cohort]
+autonomy_loess <- loess(V1~cohort, span=0.4, data = index_making)
+index_final[, "autonomy_index" := predict(autonomy_loess, newdata = index_making)]
+
+
+#plotting cohort indices
+plot(index_final$cohort,index_final$secularization_index, col="grey", xlim = c(-90,30), ylim = c(-30,120), xlab = "Cohort", ylab = "Cohort Indices - H&F Color Scheme") 
+lines(index_final$cohort, index_final$culture_shock_index, col= "green",type = "p")
+lines(index_final$cohort, index_final$autonomy_index, col= "red",type = "p")
+
+#merging
+sim1 <- merge(sim1, index_final, by="cohort", all.x=TRUE)
 
 
 
